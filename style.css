@@ -95,15 +95,6 @@ td { vertical-align: top; }
 .clearfix:after { clear: both; }
 .clearfix { zoom: 1; }
 
-/*Headings */
-h1,h2,h3,h4,h5,h6 { margin:0; padding:0; }
-h1 { font-size: 24px; }
-h2 { font-size: 20px; }
-h3 { font-size: 18px; }
-h4 { font-size: 16px; }
-h5 { font-size: 14px; }
-h6 { font-size: 12px; }
-
 .hr { border-top: 1px solid #EEE; }
 
 
@@ -658,41 +649,21 @@ span.category a {
 	margin-bottom:10px;
 }
 
-.post blockquote {
-	border-left:3px solid #ccc;
-	color:#777;
-	font-size:16px;
-	font-style:italic;
-	line-height:1.8em;
-	margin:10px 20px 10px 30px;
-	padding-left:10px;
-}
-
-
-.entry p { margin-bottom: 14px; }
-
 .entry img.alignnone,
 .entry img.aligncenter,
 .entry img.alignleft,
 .entry img.alignright,
 .entry img.attachment-fullsize {
-    margin-bottom: 10px;
-    max-width: 100%;
+  margin-bottom: 10px;
+  max-width: 100%;
 	height:auto;
 }
-
 
 .entry ul, .entry ol { margin: 0 0 14px 14px; }
 .entry li ul, .entry li ol { margin-bottom: 0; }
 .entry li { list-style-position: inside; }
 .entry ul li { list-style-type: square; }
 .entry ol li { list-style-type: decimal; }
-.entry blockquote {
-    color:#8E8E8E;
-    border-left: solid 3px #ececec;
-    padding:0 15px;
-    margin: 10px;
-}
 
 .entry h1,
 .entry h2,
