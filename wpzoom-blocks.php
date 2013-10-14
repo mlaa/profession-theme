@@ -1,6 +1,3 @@
-<div class="clear"></div>
-<div class="hr"></div>
-
 <div id="columns">
 
 	<?php
@@ -23,22 +20,27 @@
 
 				the_post();
 
-				?><span class="category"><?php echo"<a href=\"$catlink\">$cat->name</a>";?></span>
-				 
- 					<?php 
+				if ( strpos($cat->name, 'Column') !== 0 ) :
+
+					?><span class="category"><?php echo"<a href=\"$catlink\">$cat->name</a>";?></span>
+
+ 					<?php
+
+ 				endif;
+
 					$custom_field = ( option::get( 'cf_use' ) == 'on' ) ? get_post_meta( $post->ID, option::get( 'cf_photo' ), true ) : '';
   					$args = array( 'size' => 'featured-cat', 'width' => 210, 'height' => 140 );
-					if ($custom_field) { 
+					if ($custom_field) {
 						$args['meta_key'] = option::get( 'cf_photo' );
 					}
 					get_the_image( $args );
 
   					?>
- 
+
 				<h3 class="title"><a href="<?php the_permalink(); ?>" title="<?php the_title(); ?>"><?php the_title(); ?></a></h3>
 
 				<?php the_excerpt(); ?>
-  				
+
 				<div class="post-meta">
 					<?php
 					if ( option::get('display_date') == 'on' ) { ?><span class="date"><?php echo get_the_date(); ?></span> <?php }
@@ -46,8 +48,8 @@
 					edit_post_link(__('Edit', 'wpzoom'), ' <span class="separator"> &times;</span> ', ' ');
 					?>
 				</div>
-				
-			
+
+
 			<?php endwhile;	?>
 
 		</div><?php
