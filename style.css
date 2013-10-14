@@ -183,6 +183,7 @@ body {
 #main-wrap {
 	background-color:#fff;
   	margin-top:20px;
+  	border: solid 1px #222;
 }
 
 #page-wrap {
@@ -949,6 +950,7 @@ html .tabbertab ul { margin: 0; }
 	line-height:19px;
 	margin:20px auto;
  	padding-bottom: 15px;
+	border: solid 1px #222;
 }
 
 #footer a {
