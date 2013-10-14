@@ -114,7 +114,11 @@ div.navigation .dots:after {
 
 /* Forms */
 input, textarea {  font-size: 13px; padding: 7px 6px; border: 1px solid #D9D6D6;  color: #000; background: #fff;  }
-input:focus, textarea:focus { border-color: #999;  }
+input:focus, textarea:focus {
+  outline-color: transparent;
+  outline-style: none;
+	border-color: #999;
+}
 button,
 input[type=button],
 input[type=reset],
@@ -127,7 +131,7 @@ input[type=submit]:hover { background: #222;  cursor: pointer; -webkit-transitio
 /* Search Form */
 #header #search {
 	height: 23px;
-	width: 163px;
+	width: 157px;
 	border:1px solid #DAD8D8;
 	font-size:12px;
 	line-height:15px;
@@ -138,7 +142,7 @@ input[type=submit]:hover { background: #222;  cursor: pointer; -webkit-transitio
 #header #search #s  {
 	width: 122px;
 	border: none;
-	padding:1px 6px;
+	padding:2px 6px;
 	color:#4F4747;
 	display:inline;
 	float:left;
@@ -238,7 +242,7 @@ body {
 *********************************************************************************************/
 
 #topmenu {
- 	margin:3px 0 9px 10px;
+ 	margin:0 0 10px 10px;
  	float:right;
   	text-align:right;
 }
@@ -1122,7 +1126,7 @@ html .tabbertab ul { margin: 0; }
 @media screen and (max-width: 640px) {
 
 	#topmenu { float:left;text-align:left; margin-left:0; margin-top:15px;}
-	#topmenu { display:block; width:100%; margint-bottom:15px;}
+	#topmenu { display:block; width:100%; margin-bottom:15px;}
 	#articles { width:100%;}
     #main { width:100%;}
 
