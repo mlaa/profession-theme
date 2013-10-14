@@ -184,7 +184,7 @@ msgstr ""
 
 #: searchform.php:3
 #@ wpzoom
-msgid "search..."
+msgid "Search"
 msgstr ""
 
 #: functions/theme/functions.php:260
