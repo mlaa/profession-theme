@@ -34,12 +34,12 @@ $featured = new WP_Query( array(
 				if ( !$videocode ) {
 
 					?><span class="overlay"><a href="<?php the_permalink(); ?>" title="<?php the_title(); ?>"><?php the_title(); ?></a></span>
-					
+
 					<?php
 
 					$custom_field = ( option::get( 'cf_use' ) == 'on' ) ? get_post_meta($post->ID, option::get('cf_photo'), true) : '';
 					$args = array( 'size' => 'slider', 'width' => 520, 'height' => 300, 'default_image' => 'http://placehold.it/520x300' );
-					if ($custom_field) { 
+					if ($custom_field) {
 						$args['meta_key'] = option::get( 'cf_photo' );
 					}
 					get_the_image( $args );
@@ -65,13 +65,13 @@ $featured = new WP_Query( array(
 				</span>
 
 			</div><?php
-		
+
 		endwhile;
 		?>
 
 	</div>
 
- 
+
  	<div id="navi">
 
 		<ul>
@@ -82,10 +82,10 @@ $featured = new WP_Query( array(
 				$featured->the_post();
 
 				?><li>
-				
+
  					<?php
 						$custom_field = ( option::get( 'cf_use' ) == 'on' ) ? get_post_meta($post->ID, option::get('cf_photo'), true) : '';
-  						get_the_image( array( 'size' => 'slider-small', 'meta_key' => $custom_field, 'width' => 90, 'height' => 66, 'link_to_post' => false, 'before' => '<a href="#">', 'after' => '</a>', 'default_image' => 'http://placehold.it/90x66' ) ); 
+  						get_the_image( array( 'size' => 'slider-small', 'meta_key' => $custom_field, 'width' => 90, 'height' => 66, 'link_to_post' => false, 'before' => '<a href="#">', 'after' => '</a>', 'default_image' => 'http://placehold.it/90x66' ) );
  						?>
 
   				</li><?php
@@ -100,3 +100,6 @@ $featured = new WP_Query( array(
 	</div>
 
 </div>
+
+<div class="clear"></div>
+<div class="hr"></div>
