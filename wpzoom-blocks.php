@@ -41,6 +41,7 @@
 
 				<?php the_excerpt(); ?>
 
+				<!--
 				<div class="post-meta">
 					<?php
 					if ( option::get('display_date') == 'on' ) { ?><span class="date"><?php echo get_the_date(); ?></span> <?php }
@@ -48,6 +49,7 @@
 					edit_post_link(__('Edit', 'wpzoom'), ' <span class="separator"> &times;</span> ', ' ');
 					?>
 				</div>
+				//-->
 
 
 			<?php endwhile;	?>

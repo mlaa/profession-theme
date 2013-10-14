@@ -53,11 +53,13 @@ $featured = new WP_Query( array(
 
 					<h3><a href="<?php the_permalink(); ?>" title="<?php the_title(); ?>"><?php the_title(); ?></a></h3>
 
+					<!--
 					<ul class="meta-feature">
 						<li><?php echo get_the_date(); ?></li>
 						<li><span class="separator">&times;</span> <?php comments_popup_link( __('0 comments', 'wpzoom'), __('1 comment', 'wpzoom'), __('% comments', 'wpzoom')); ?></li>
 						<?php edit_post_link( __('Edit', 'wpzoom'), ' <li> <span class="separator"> &times;</span> ', '</li>'); ?>
 					</ul>
+					//-->
 
 					<?php the_excerpt(); ?>
 
