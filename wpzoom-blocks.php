@@ -61,4 +61,6 @@
 	<div class="clear"></div>
 </div> <!-- /#columns -->
 
+<div class="hr"></div>
+
 <?php wp_reset_query(); ?>
