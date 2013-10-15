@@ -4,8 +4,8 @@
 add_filter('body_class', 'my_body_class');
 
 function my_body_class($classes) {
-  // Add 'tk-ff-meta-serif-web-pro' to the $classes array.
-  $classes[] = 'tk-ff-meta-serif-web-pro';
+  // Add 'tk-droid-serif' to the $classes array.
+  $classes[] = 'tk-droid-serif';
   return $classes;
 }
 

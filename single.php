@@ -11,6 +11,8 @@
 
 			<h1 class="title"><a href="<?php the_permalink(); ?>" rel="bookmark" title="Permanent Link to <?php the_title_attribute(); ?>"><?php the_title(); ?></a></h1>
 
+			<h2 class="author"><?php echo get_post_meta($post->ID, 'profession_author', true); ?></h2>
+
 			<div class="entry">
 
 				<?php the_content(); ?>

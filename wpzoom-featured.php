@@ -53,6 +53,8 @@ $featured = new WP_Query( array(
 
 					<h3><a href="<?php the_permalink(); ?>" title="<?php the_title(); ?>"><?php the_title(); ?></a></h3>
 
+					<h4 class="author"><?php echo get_post_meta($post->ID, 'profession_author', true); ?></h4>
+
 					<!--
 					<ul class="meta-feature">
 						<li><?php echo get_the_date(); ?></li>

@@ -39,6 +39,9 @@
 
 				<h3 class="title"><a href="<?php the_permalink(); ?>" title="<?php the_title(); ?>"><?php the_title(); ?></a></h3>
 
+				<h4 class="author"><?php echo get_post_meta($post->ID, 'profession_author', true); ?></h4>
+
+
 				<?php the_excerpt(); ?>
 
 				<!--

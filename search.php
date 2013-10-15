@@ -1,6 +1,6 @@
 <?php get_header(); ?>
 
-<div id="articles">
+<div id="articles full-width">
 
 	<h3 class="archive_title"><?php _e('Search Results for:', 'wpzoom'); ?> <?php the_search_query(); ?></h3>
 
@@ -20,7 +20,5 @@
 	endif; ?>
 
 </div><!-- /#articles -->
-
-<?php get_sidebar(); ?>
 
 <?php get_footer(); ?>

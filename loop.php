@@ -16,7 +16,9 @@
 
 			<?php if ( option::get('display_category') == 'on' ) { ?><span class="category"><?php the_category(' / '); ?></span> <?php } ?>
 
-			<h2 class="title"><a href="<?php the_permalink(); ?>" rel="bookmark" title="Permanent Link to <?php the_title_attribute(); ?>"><?php the_title(); ?></a></h2>
+			<h3 class="title"><a href="<?php the_permalink(); ?>" rel="bookmark" title="Permanent Link to <?php the_title_attribute(); ?>"><?php the_title(); ?></a></h3>
+
+			<h4 class="author"><?php echo get_post_meta($post->ID, 'profession_author', true); ?></h4>
 
 			<!--
  			<div class="post-meta">
