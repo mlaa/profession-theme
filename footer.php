@@ -26,7 +26,9 @@
 
 
 		<div id="footer_right">
+			<!--
 			<?php wp_nav_menu( array( 'container' => '', 'container_class' => '', 'menu_class' => '', 'sort_column' => 'menu_order', 'theme_location' => 'tertiary', 'depth' => '1' ) ); ?>
+			//-->
 
 			<span><a href="#top">Back to top</a></span>
 

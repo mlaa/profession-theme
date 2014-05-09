@@ -93,7 +93,7 @@ td { vertical-align: top; }
 .clearfix:after { clear: both; }
 .clearfix { zoom: 1; }
 
-.hr { border-top: 1px solid #EEE; }
+.hr { border-top: 1px solid #ccc; }
 
 
 /* Navigation */
@@ -489,9 +489,13 @@ ul.dropdown ul li a { padding:5px 0;}
 	padding-left:0;
 }
 
+.column:nth-child(4) {
+	padding-right: 0;
+}
+
 .column img,
 .column_first img {
- 	margin:0 0 8px;
+ 	margin:0;
 }
 
 
@@ -514,7 +518,7 @@ ul.dropdown ul li a { padding:5px 0;}
 
 .article {
  	margin:0 0 20px;
-	padding:0 0 20px;
+/* padding:0 0 20px; */
 }
 
 .post-thumb {
@@ -531,15 +535,15 @@ ul.dropdown ul li a { padding:5px 0;}
 #columns .post-meta,
 span.category {
 	margin:0 0 15px;
- 	font-size:11px;
+ 	font-size: 85%;
 	font-weight:normal;
 	display:block;
 }
 
 span.category {
+	text-align: center;
 	text-transform: uppercase;
-	font-size:12px;
-	margin:0 0 5px;
+	margin:1em 0;
 }
 
 span.category a {
@@ -582,11 +586,10 @@ span.category a {
 *********************************************************************************************/
 
 #comments { clear: both; }
-#comments h3 { font-size: 20px; line-height: 1.3; margin: 0; padding: 10px 0;  color: #333; font-weight: normal; }
 
 #comments .navigation { padding: 0 0 18px 0; }
-.commentlist { list-style: none; margin: 0; }
-.commentlist li.comment { border-bottom: 1px solid #eee; font-size:12px; line-height: 1.7; margin: 0 0 24px 0; padding: 0 0 0 76px; position: relative; }
+.commentlist { list-style: none; margin: 0; padding: 0; }
+.commentlist li.comment { border-bottom: 1px solid #eee; font-size:0.95em; line-height: 1.7; margin: 0 0 24px 0; padding: 0 0 0 76px; position: relative; }
 .commentlist li:last-child { border-bottom: none; margin-bottom: 0; }
 #comments .comment-body ul, #comments .comment-body ol { margin-bottom: 18px; }
 #comments .comment-body p:last-child { margin-bottom: 6px; }
@@ -594,24 +597,23 @@ span.category a {
 .commentlist ol { list-style: decimal; }
 .commentlist .avatar { position: absolute; top: 4px; left: 0; }
 .comment-author { margin-bottom:3px; }
-.comment-author cite { color: #B1B1B1;  font-style:normal; font-size:14px; }
+.comment-author cite { color: #B1B1B1;  font-style:normal; font-weight: bold; }
 .comment-author .says {  display:none; }
-.comment-meta { font-size: 12px;  margin: 0; float: right; }
+.comment-meta { margin: 0; float: right; }
 .comment-meta a:link, .comment-meta a:visited { color: #888; text-decoration: none; }
 .comment-meta a:active, .comment-meta a:hover { color: #333; }
-.reply { font-size: 12px; padding: 0 0 24px 0; }
-.commentlist .children { list-style: none; margin: 0; }
+.reply { padding: 0 0 24px 0; }
+.commentlist .children { list-style: none; margin: 0; padding: 0; }
 .commentlist .children li { border: none; margin: 0; }
 .nopassword, .nocomments { display: none; }
 #comments .pingback { border-bottom: 1px solid #dedede; margin-bottom: 18px; padding-bottom: 18px; }
 .commentlist li.comment+li.pingback { margin-top: -6px; }
-#comments .pingback p { color: #888; display: block; font-size: 12px; line-height: 18px; margin: 0; }
+#comments .pingback p { color: #888; display: block; line-height: 18px; margin: 0; }
 #comments .pingback .url { font-size: 13px; font-style: italic; }
 .comment-notes { display:none; }
 .bypostauthor { }
 
 /* Comments form */
-#respond { margin: 24px 0; overflow: hidden; position: relative; }
 #respond p { margin: 0; }
 #respond .comment-notes { margin-bottom: 1em; }
 .form-allowed-tags { line-height: 1em; }
@@ -619,11 +621,10 @@ span.category a {
 .commentlist #respond { clear: both; display: block; }
 #comments-list #respond { margin: 0 0 18px 0; }
 #comments-list ul #respond { margin: 0; }
-#cancel-comment-reply-link { font-size: 12px; font-weight: normal; line-height: 18px; }
+#cancel-comment-reply-link { font-weight: normal; line-height: 18px; }
 #respond .required_lab {  font-weight: bold;   }
-#respond label {   font-size: 12px; }
 #respond input { margin: 0 0 9px; }
-#respond textarea { width: 96%; height: 145px;  }
+#respond textarea { width: 96%; height: 12em;  }
 #respond .form-allowed-tags { color: #888; font-size: 12px; line-height: 18px; display:none; }
 #respond .form-allowed-tags code { font-size: 11px; }
 #respond .form-submit { text-align:left; margin-top:10px; }
@@ -947,6 +948,22 @@ html .tabbertab ul { margin: 0; }
 	#page-wrap { width: auto; }
 	#main-wrap { margin: 0; }
 	#content-wrap { padding:20px 0; }
+
+	.avatar {
+		display: none;
+	}
+
+	.commentlist li.comment {
+		padding: 0;
+	}
+
+	.comment-meta {
+		float: none;
+	}
+
+	.reply a {
+		display: none;
+	}
 
 }
 

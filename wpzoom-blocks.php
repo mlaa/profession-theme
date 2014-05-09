@@ -20,29 +20,29 @@
 
 				the_post();
 
-				if ( strpos($cat->name, 'Column') !== 0 ) :
+				$custom_field = ( option::get( 'cf_use' ) == 'on' ) ? get_post_meta( $post->ID, option::get( 'cf_photo' ), true ) : '';
+  				$args = array( 'size' => 'featured-cat', 'width' => 210, 'height' => 140 );
+				if ($custom_field) {
+					$args['meta_key'] = option::get( 'cf_photo' );
+				}
+				get_the_image( $args );
 
-					?><span class="category"><?php echo"<a href=\"$catlink\">$cat->name</a>";?></span>
+				/* Get first relevant category */
+				foreach(get_the_category() as $category) :
+					if ( strpos($category->name, 'Column') !== 0 && $category->name != 'Uncategorized' && $category->name != 'Prominent' ) :
+						?><span class="category"><?php echo"<a href=\"" . get_category_link($category->term_id) . "\">$category->name</a>"; ?></span><?php
+						break;
+	 				endif;
+				endforeach;
 
- 					<?php
-
- 				endif;
-
-					$custom_field = ( option::get( 'cf_use' ) == 'on' ) ? get_post_meta( $post->ID, option::get( 'cf_photo' ), true ) : '';
-  					$args = array( 'size' => 'featured-cat', 'width' => 210, 'height' => 140 );
-					if ($custom_field) {
-						$args['meta_key'] = option::get( 'cf_photo' );
-					}
-					get_the_image( $args );
-
-  					?>
+  			?>
 
 				<h3 class="title"><a href="<?php the_permalink(); ?>" title="<?php the_title(); ?>"><?php the_title(); ?></a></h3>
 
 				<h4 class="author"><?php echo get_post_meta($post->ID, 'profession_author', true); ?></h4>
 
 
-				<?php the_excerpt(); ?>
+				<?php echo get_post_meta($post->ID, 'profession_excerpt', true); ?>
 
 				<!--
 				<div class="post-meta">
@@ -64,6 +64,8 @@
 	<div class="clear"></div>
 </div> <!-- /#columns -->
 
+<br/>
 <div class="hr"></div>
+<br/>
 
 <?php wp_reset_query(); ?>

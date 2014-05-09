@@ -1,10 +1,10 @@
-<?php get_header(); 
+<?php get_header();
 	if ( is_author() ) {
 		$curauth = (isset($_GET['author_name'])) ? get_user_by('slug', $author_name) : get_userdata(intval($author));
 	}
 ?>
 
-<div id="articles">
+<div id="articles full-width">
 
 	<?php if ( have_posts() ) the_post(); ?>
 
@@ -14,7 +14,7 @@
 		<?php /* daily archive */ } elseif (is_day()) { ?><?php _e('Archive for', 'wpzoom'); ?> <?php the_time('F jS, Y'); ?>
 		<?php /* monthly archive */ } elseif (is_month()) { ?><?php _e('Archive for', 'wpzoom'); ?> <?php the_time('F, Y'); ?>
 		<?php /* yearly archive */ } elseif (is_year()) { ?><?php _e('Archive for', 'wpzoom'); ?> <?php the_time('Y'); ?>
-		<?php /* author archive */ } elseif (is_author()) { ?><?php _e( ' Articles written by: ', 'wpzoom' ); echo $curauth->display_name; ?>  
+		<?php /* author archive */ } elseif (is_author()) { ?><?php _e( ' Articles written by: ', 'wpzoom' ); echo $curauth->display_name; ?>
  		<?php /* paged archive */ } elseif (isset($_GET['paged']) && !empty($_GET['paged'])) { ?><?php _e('Archives', 'wpzoom'); } ?>
  	</h3>
 

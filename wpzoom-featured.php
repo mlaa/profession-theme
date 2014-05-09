@@ -63,7 +63,7 @@ $featured = new WP_Query( array(
 					</ul>
 					//-->
 
-					<?php the_excerpt(); ?>
+					<?php echo get_post_meta($post->ID, 'profession_excerpt', true); ?>
 
 					<span class="more"><a href="<?php the_permalink(); ?>" title="<?php the_title(); ?>"><?php _e('Read more...', 'wpzoom'); ?></a></span>
 				</span>

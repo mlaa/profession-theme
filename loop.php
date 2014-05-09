@@ -1,4 +1,4 @@
-<?php while (have_posts()) : the_post();?>
+ <?php while (have_posts()) : the_post();?>
 	<div class="article" id="post-<?php the_ID(); ?>">
 
 		<?php if ( option::get('display_thumb') == 'on' ) {
@@ -14,7 +14,16 @@
 
 		<div class="post-content">
 
-			<?php if ( option::get('display_category') == 'on' ) { ?><span class="category"><?php the_category(' / '); ?></span> <?php } ?>
+			<?php
+			/* Get first relevant category */
+			$categories = get_the_category();
+			foreach($categories as $category) :
+				if ( strpos($category->name, 'Column') !== 0 && $category->name != 'Uncategorized' && $category->name != 'Prominent' ) :
+					?><span class="category"><?php echo"<a href=\"" . get_category_link($category->term_id) . "\">$category->name</a>"; ?></span><?php
+					break;
+				endif;
+			endforeach;
+			?>
 
 			<h3 class="title"><a href="<?php the_permalink(); ?>" rel="bookmark" title="Permanent Link to <?php the_title_attribute(); ?>"><?php the_title(); ?></a></h3>
 
@@ -31,15 +40,15 @@
 			</div>
  			//-->
 
-			<?php if ( option::get('display_type') == 'Post Excerpts' ) the_excerpt(); else { ?>
+			<?php if ( option::get('display_type') == 'Post Excerpts' ) echo get_post_meta($post->ID, 'profession_excerpt', true); else { ?>
 
 				<div class="entry">
 					<?php the_content(); ?>
 				</div>
 			<?php } ?>
 
-			<div class="clear"></div>
-		</div><div class="clear"></div>
+ 		</div>
+ 		<div class="clear"></div>
 
 	</div> <!-- /.article -->
 

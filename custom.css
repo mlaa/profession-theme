@@ -95,22 +95,30 @@ a:hover {
 
 a img { border: none; }
 
+p.wc a, p.note a {
+   color: #000;
+   text-decoration: underline;
+}
+
 
 /* Rules */
 
 hr {
    margin-top: 2em;
    margin-bottom: 2em;
-   margin-left: 0;
-   margin-right: 0;
+   margin-left: auto;
+   margin-right: auto;
    padding: 0;
    height: 1px;
+   width: 10%;
+   border-color: #333;
 }
 
 
 /* Epigraphs */
 
 p.epigraph {
+   margin: 0;
    font-style: italic;
 }
 
@@ -145,6 +153,7 @@ ul {
    padding-left: 1.5em;
 }
 
+
 /* Extracts */
 
 blockquote {
@@ -175,7 +184,6 @@ div.figure {
 }
 
 div.figure p {
-   margin: 0.5em 0 0 0;
    font-size: 0.9em;
 }
 
@@ -185,6 +193,20 @@ div.placeholder img {
    background-color: #fcc;
 }
 
+p.caption {
+   margin: 1em 0;
+   color: #222;
+   font-weight: bold;
+}
+
+
+/* Author note */
+
+p.authornote {
+   margin-top: 2em;
+   padding: 1em;
+   background-color: #ddd;
+}
 
 /* Tag */
 
@@ -238,13 +260,70 @@ h1.title a {
    font-family: jaf-facitweb, "Trebuchet MS", sans-serif;
 }
 
-.single .title, .single .author {
+.post .title, .single .title, .single h2.author {
    text-align: center;
+}
+
+.thumbnail {
+   margin: 0;
+   margin-bottom: 0.75em;
+   line-height: 90%;
+}
+
+img.thumbnail {
+   margin-bottom: 0;
+}
+
+.imagecaption {
+   font-family: jaf-facitweb, "Trebuchet MS", sans-serif;
+   font-size: 60%;
+   color: #999;
+}
+
+#respond label {
+   display: block;
+   margin: 1em 0;
+   font-family: jaf-facitweb, "Trebuchet MS", sans-serif;
+   font-size: 1.1em;
+   font-weight: bold;
+}
+
+#comments p {
+   margin: 0.5em 0;
+}
+
+#comments .reply {
+   font-size: 90%;
+}
+
+.post h4.author {
+  margin-top: -0.5em;
+}
+
+
+/* Home page categories */
+
+.home-page .category {
+   margin: 0;
+   font-size: 80%;
+   text-align: left;
+}
+
+.home-page .category a {
+   color: #666;
+}
+
+.prominent-articles {
+   margin-top: 1em;
 }
 
 
 /* Custom hides */
 
 .widget-area {
+   display: none;
+}
+
+body.category .category {
    display: none;
 }

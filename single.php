@@ -66,10 +66,6 @@
 		</div><!-- /.post -->
 
 
-		<?php if (option::get('post_comments') == 'on') {
-			comments_template();
-		} ?>
-
 		<?php endwhile;
 
 			else:
@@ -85,4 +81,9 @@
 	get_sidebar();
 } else { echo "<div class=\"clear\"></div>"; } ?>
 
+<?php if (option::get('post_comments') == 'on') {
+	comments_template();
+} ?>
+
 <?php get_footer(); ?>
+

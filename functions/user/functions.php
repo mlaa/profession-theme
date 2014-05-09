@@ -9,4 +9,35 @@ function my_body_class($classes) {
   return $classes;
 }
 
+// Add custom category filter.
+add_filter('the_category', 'the_category_filter', 10, 2);
+
+function the_category_filter($thelist, $separator = ' ') {
+
+  if(!defined('WP_ADMIN')) {
+
+    // Category IDs to exclude
+    $exclude = array(5, 6, 7, 8, 18);
+    foreach($exclude as $key => $id) {
+      $exclude[$key] = get_cat_name($id);
+    }
+
+    // Get categories.
+    $cats = explode($separator, $thelist);
+
+    foreach($cats as $key => $cat) {
+      if(in_array(trim(strip_tags($cat)), $exclude)) {
+        unset($cats[$key]);
+      }
+    }
+
+    return implode($separator, $cats);
+
+  } else {
+
+    return $thelist;
+  }
+
+}
+
 ?>

@@ -17,7 +17,7 @@
 <?php if ( have_comments() ) : ?>
 
 	<h3><?php comments_number(__('No Comments','wpzoom'), __('One Comment','wpzoom'), __('% Comments','wpzoom') );?></h3>
- 
+
 	<?php if ( get_comment_pages_count() > 1 && get_option( 'page_comments' ) ) : // Are there comments to navigate through? ?>
 		<div class="navigation">
 			<?php paginate_comments_links( array('prev_text' => ''.__( '<span class="meta-nav">&larr;</span> Older Comments', 'wpzoom' ).'', 'next_text' => ''.__( 'Newer Comments <span class="meta-nav">&rarr;</span>', 'wpzoom' ).'') );?>
@@ -41,7 +41,7 @@
 			<?php paginate_comments_links( array('prev_text' => ''.__( '<span class="meta-nav">&larr;</span> Older Comments', 'wpzoom' ).'', 'next_text' => ''.__( 'Newer Comments <span class="meta-nav">&rarr;</span>', 'wpzoom' ).'') );?>
 		</div><!-- .navigation -->
 	<?php endif; // check for comment navigation ?>
- 
+
 
 	<?php else : // or, if we don't have comments:
 
@@ -55,7 +55,7 @@
 
 <?php endif; // end have_comments() ?>
 
-<?php 
+<?php
 $commenter = wp_get_current_commenter();
 $req = get_option( 'require_name_email' );
 $aria_req = ( $req ? " aria-required='true'" : '' );
@@ -81,13 +81,13 @@ $custom_comment_form = array( 'fields' => apply_filters( 'comment_form_default_f
 			'<label for="comment">' . __( 'Comment' , 'wpzoom' ) . '</label> ' .
  			'<textarea id="comment" name="comment" cols="35" rows="5" aria-required="true" class="required"></textarea>' .
 			'</p><div class="clear"></div>',
-	'logged_in_as' => '<p class="logged-in-as">' . sprintf( __( 'Logged in as <a href="%1$s">%2$s</a>. <a href="%3$s">Log out?</a>' ), admin_url( 'profile.php' ), $user_identity, wp_logout_url( apply_filters( 'the_permalink', get_permalink() ) ) ) . '</p>',
+	'logged_in_as' => '<p class="logged-in-as">' . sprintf( __( 'Logged in as <a href="%1$s">%2$s</a>. <a href="%3$s">Log out?</a>' ), 'http://commons.mla.org/members/' . $user_login . '/', $user_identity, wp_logout_url( apply_filters( 'the_permalink', get_permalink() ) ) ) . '</p>',
 	'title_reply' => __( 'Leave a Reply' , 'wpzoom' ),
   	'cancel_reply_link' => __( 'Cancel' , 'wpzoom' ),
 	'label_submit' => __( 'Submit' , 'wpzoom' ),
 	'comment_form_after' => '<div class="clear"></div>',
 );
-comment_form($custom_comment_form); 
+comment_form($custom_comment_form);
 ?>
- 
+
 </div><!-- #comments -->
