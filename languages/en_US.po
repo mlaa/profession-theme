@@ -1,6 +1,6 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: Yamidoo Magazine v2.0\n"
+"Project-Id-Version: Profession (Yamidoo Magazine v2.0)\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: \n"
 "PO-Revision-Date: 2012-07-25 08:37:14+0000\n"
