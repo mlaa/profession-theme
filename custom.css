@@ -199,6 +199,16 @@ p.caption {
    font-weight: bold;
 }
 
+/* center images */ 
+.wp-caption.alignnone, .wp-caption.aligncenter { 
+	marign: 0 auto; 
+}
+/* center the caption, too */ 
+.wp-caption p { 
+	text-align: center; 
+	font-size: 85%; 
+	font-family: sans-serif; 
+} 
 
 /* Author note */
 
@@ -300,6 +310,9 @@ img.thumbnail {
   margin-top: -0.5em;
 }
 
+.pub_date p { 
+	font-weight: bold; 
+} 
 
 /* Home page categories */
 
