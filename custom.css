@@ -356,3 +356,9 @@ body.category .category {
 	margin: 0.5em 0; 
 } 
 
+/* Bugfixes */ 
+
+/* don't center categories in the archive list */ 
+.archive span.category { 
+	text-align: left; 
+} 
