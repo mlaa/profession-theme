@@ -176,6 +176,10 @@ p.extract-reference {
    text-align: right;
 }
 
+blockquote.extract.poetry-stanza { 
+	line-height: 0.9em; 
+} 
+
 
 /* Figures */
 
@@ -362,3 +366,5 @@ body.category .category {
 .archive span.category { 
 	text-align: left; 
 } 
+
+
