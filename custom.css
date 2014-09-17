@@ -201,13 +201,13 @@ p.caption {
 
 /* center images */ 
 .wp-caption.alignnone, .wp-caption.aligncenter { 
-	marign: 0 auto; 
+	margin: 0 auto; 
 }
 /* center the caption, too */ 
 .wp-caption p { 
 	text-align: center; 
 	font-size: 85%; 
-	font-family: sans-serif; 
+	font-family: jaf-factiweb, "Trebuchet MS", sans-serif; 
 } 
 
 /* Author note */
