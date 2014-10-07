@@ -342,20 +342,6 @@ body.category .category {
    display: none;
 }
 
-/* Categories and Archives Pages */ 
-
-.page-template-template-categories-php #content-wrap { 
-	margin-left: 4%; 
-} 
-.page-template-template-archive-php #content-wrap { 
-	margin-left: 4%; 
-} 
-.page-template-template-categories-php h1 { 
-	margin: 0.5em 0; 
-} 
-.page-template-template-archive-php h1 { 
-	margin: 0.5em 0; 
-} 
 
 /* Bugfixes */ 
 
