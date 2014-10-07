@@ -381,6 +381,14 @@ body.category .category {
 }
 
 
+/* Navigation */
+
+div.navigation {
+   font-family: jaf-facitweb, "Trebuchet MS", sans-serif;
+   font-size: 1em;
+}
+
+
 /* Bugfixes */ 
 
 /* don't center categories in the archive list */ 
