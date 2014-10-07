@@ -1018,8 +1018,6 @@ html .tabbertab ul { margin: 0; }
   #respond .form_fields input { width:98%; }
   .children #respond { margin-right:0; }
 
-	#sidebar { display: none; }
-
   #footer div.column { margin-right: 0;  width: 94%; }
 	#footer .column .widget { width:100%; }
 	#footer_right { padding:15px 20px 0 20px; }
