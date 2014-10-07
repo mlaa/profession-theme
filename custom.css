@@ -163,22 +163,18 @@ blockquote {
    margin-right: 0;
 }
 
-p.extract {
-   margin: 0.25em 0;
+blockquote p {
+   margin: 1em 0 0 0;
 }
 
-p.extract ~ p.extract {
-   margin-top: 1em;
+.poetry-stanza p {
+   margin: 0;
 }
 
-p.extract-reference {
+.extract-reference {
    margin-top: 0;
    text-align: right;
 }
-
-blockquote.extract.poetry-stanza { 
-	line-height: 0.9em; 
-} 
 
 
 /* Figures */
