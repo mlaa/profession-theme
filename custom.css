@@ -343,6 +343,44 @@ body.category .category {
 }
 
 
+/* Category and Archive widgets */
+
+#sidebar {
+   float: none;
+   width: auto;
+}
+
+.widget {
+   width: 47%;
+   margin-bottom: 1.5em;
+   font-family: jaf-facitweb, "Trebuchet MS", sans-serif;
+}
+
+.widget_categories {
+  float: right;
+}
+
+.widget ul {
+  padding-left: 10px;
+}
+
+.widget li {
+   color: #666;
+   font-size: 1em;
+}
+
+.widget li:last-child {
+   padding-bottom: 0;
+   border-bottom: none;
+}
+
+.widget a, .widget h3.title {
+   padding-right: 5px;
+   font-size: 1em;
+   font-weight: bold;
+}
+
+
 /* Bugfixes */ 
 
 /* don't center categories in the archive list */ 
