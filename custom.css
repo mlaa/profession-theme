@@ -163,15 +163,15 @@ blockquote {
    margin-right: 0;
 }
 
-p.extract {
-   margin: 0.25em 0;
+blockquote p {
+   margin: 1em 0 0 0;
 }
 
-p.extract ~ p.extract {
-   margin-top: 1em;
+.poetry-stanza p {
+   margin: 0;
 }
 
-p.extract-reference {
+.extract-reference {
    margin-top: 0;
    text-align: right;
 }
@@ -199,6 +199,16 @@ p.caption {
    font-weight: bold;
 }
 
+/* center images */ 
+.wp-caption.alignnone, .wp-caption.aligncenter { 
+	margin: 1.5em auto; 
+}
+/* center the caption, too */ 
+.wp-caption p { 
+	text-align: center; 
+	font-size: 85%; 
+	font-family: "Trebuchet MS", sans-serif; 
+} 
 
 /* Author note */
 
@@ -300,6 +310,9 @@ img.thumbnail {
   margin-top: -0.5em;
 }
 
+.pub_date p { 
+   font-weight: bold; 
+} 
 
 /* Home page categories */
 
@@ -327,3 +340,59 @@ img.thumbnail {
 body.category .category {
    display: none;
 }
+
+
+/* Category and Archive widgets */
+
+#sidebar {
+   float: none;
+   width: auto;
+}
+
+.widget {
+   width: 47%;
+   margin-bottom: 1.5em;
+   font-family: jaf-facitweb, "Trebuchet MS", sans-serif;
+}
+
+.widget_categories {
+  float: right;
+}
+
+.widget ul {
+  padding-left: 10px;
+}
+
+.widget li {
+   color: #666;
+   font-size: 1em;
+}
+
+.widget li:last-child {
+   padding-bottom: 0;
+   border-bottom: none;
+}
+
+.widget a, .widget h3.title {
+   padding-right: 5px;
+   font-size: 1em;
+   font-weight: bold;
+}
+
+
+/* Navigation */
+
+div.navigation {
+   font-family: jaf-facitweb, "Trebuchet MS", sans-serif;
+   font-size: 1em;
+}
+
+
+/* Bugfixes */ 
+
+/* don't center categories in the archive list */ 
+.archive span.category { 
+	text-align: left; 
+} 
+
+

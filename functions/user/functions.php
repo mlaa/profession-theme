@@ -40,4 +40,12 @@ function the_category_filter($thelist, $separator = ' ') {
 
 }
 
+function exclude_widget_categories ($args){
+  $exclude = "5,6,7,8,18";
+  $args["exclude"] = $exclude;
+  return $args;
+}
+
+add_filter("widget_categories_args","exclude_widget_categories");
+
 ?>

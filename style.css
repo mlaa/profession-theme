@@ -105,11 +105,13 @@ div.navigation span.pages { margin-right: 10px; display: none; }
 div.navigation .alignleft, div.navigation .alignright { margin: 0; }
 div.navigation .prev { float:left; }
 div.navigation .next { float:right; }
-div.navigation .page-numbers:after { color: #BDB7B9;  content: "/"; padding: 0 0 0 10px; }
-div.navigation .next:after,
-div.navigation .prev:after,
-div.navigation .dots:after {
+.page-numbers ~ .page-numbers:before { color: #BDB7B9;  content: "/"; padding-right: 10px; }
+div.navigation .next:before,
+.prev + .page-numbers:before,
+div.navigation .prev:before,
+div.navigation .dots:before {
      content: "";
+     padding: 0;
 }
 
 /* Forms */
@@ -1015,8 +1017,6 @@ html .tabbertab ul { margin: 0; }
   #respond .comment-form-comment {width:99%; }
   #respond .form_fields input { width:98%; }
   .children #respond { margin-right:0; }
-
-	#sidebar { display: none; }
 
   #footer div.column { margin-right: 0;  width: 94%; }
 	#footer .column .widget { width:100%; }
