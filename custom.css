@@ -201,7 +201,7 @@ p.caption {
 
 /* center images */ 
 .wp-caption.alignnone, .wp-caption.aligncenter { 
-	margin: 0 auto; 
+	margin: 1.5em auto; 
 }
 /* center the caption, too */ 
 .wp-caption p { 
