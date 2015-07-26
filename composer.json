@@ -1,5 +1,5 @@
 {
-  "name": "mlaa/profession",
+  "name": "mlaa/profession-theme",
   "type": "wordpress-theme",
   "require": {
     "php": ">=5.3.0",
