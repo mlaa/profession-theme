@@ -10,7 +10,7 @@ add_action('admin_init', array('WPZOOM_Updater', 'init'));
 
 class WPZOOM_Updater {
     public static function init() {
-        if (option::is_on('framework_update_enable') && 
+        if (option::is_on('framework_update_enable') &&
             option::is_on('framework_update_notification_enable'))
         {
             add_action('admin_head', array('WPZOOM_Framework_Updater', 'update_init'));
@@ -22,6 +22,8 @@ class WPZOOM_Updater {
         }
 
         add_action('wp_ajax_wpzoom_updater', array(__CLASS__, 'ajax'));
+
+        add_filter('http_request_args',  array('WPZOOM_Theme_Updater', 'disable_wporg_request'), 5, 2);
     }
 
     public static function ajax() {
@@ -35,6 +37,12 @@ class WPZOOM_Updater {
         if ($_POST['type'] == 'theme-notification-hide') {
             option::set('theme_last_checked', time() + 60 * 60 * 48);
             option::delete('theme_status');
+
+            die();
+        }
+
+        if ($_POST['type'] == 'seo-notification-hide') {
+            option::set('framework_seo_aware', 1);
 
             die();
         }

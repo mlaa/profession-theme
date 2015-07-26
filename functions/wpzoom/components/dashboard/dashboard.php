@@ -64,16 +64,28 @@ function WPZOOM_Dashboard() {
     <p class="sub">Latest Theme</p>
     <div class="theme_thumb">
         <?php
-            $lastTheme = get_transient('wpzoom_dashboard_widget_theme');
-            if (!$lastTheme) {
-                $lastTheme = @file_get_contents('http://www.wpzoom.com/themes/?last-theme=true');
-                if ($lastTheme) {
-                    set_transient('wpzoom_dashboard_widget_theme', $lastTheme, 60 * 60 * 24);
+            $current = get_transient( 'wpzoom_dashboard_widget_theme' );
+            if ( ! is_object( $current ) || ! isset( $current->data ) ) {
+                $current = new stdClass();
+                $current->lastChecked = 0;
+            }
+
+            $time_changed = 24 * HOUR_IN_SECONDS < ( time() - $current->lastChecked );
+
+            if ( $time_changed ) {
+                $response = wp_remote_get( 'http://www.wpzoom.com/frame/latest_theme.html' );
+
+                if ( ! is_wp_error( $response ) && 200 == wp_remote_retrieve_response_code( $response ) ) {
+                    $current->data = wp_remote_retrieve_body( $response );
                 }
+
+                $current->lastChecked = time();
+
+                set_transient( 'wpzoom_dashboard_widget_theme', $current );
             }
         ?>
 
-        <?php if ($lastTheme) echo $lastTheme; ?>
+        <?php if ($current) echo $current->data; ?>
 
     </div>
 

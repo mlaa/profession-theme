@@ -1,5 +1,5 @@
-/* 
- TynyMCE button for [wzslider] shortcode 
+/*
+ TinyMCE button for [wzslider] shortcode
 */
 
 (function(){
@@ -24,10 +24,10 @@
             return null;
         },
     });
-    
-    // registers the plugin. 
+
+    // registers the plugin.
     tinymce.PluginManager.add('wzslider', tinymce.plugins.wzslider);
-    
+
     // executes this when the DOM is ready
     jQuery(function(){
         // creates a form to be displayed everytime the button is clicked
@@ -76,43 +76,49 @@
                   </select><br />\
                 <small>enablig this option will display a caption with the title of each image</small></td>\
             </tr>\
+            <tr>\
+                <th><label for="wzslider-exclude-ids">Exclude image IDs:</label></th>\
+                <td><input type="text" id="wzslider-exclude" name="exclude" value="" /><br />\
+                <small>Image IDs inserted here will be excluded from the slider (comma separated)</small></td>\
+            </tr>\
         </table>\
         <p class="submit">\
             <input type="button" id="wzslider-submit" class="button-primary" value="Insert Gallery" name="submit" />\
         </p>\
         </div>');
-        
+
         var table = form.find('table');
         form.appendTo('body').hide();
-        
+
         // handles the click event of the submit button
         form.find('#wzslider-submit').click(function(){
             // defines the options and their default values
             // again, this is not the most elegant way to do this
             // but well, this gets the job done nonetheless
-            var options = { 
+            var options = {
                 'autoplay'   : 'false',
                 'interval'   : '3000',
                 'height'     : '500',
                 'transition' : '\'fade\'',
                 'info'       : 'false',
-                'lightbox'   : 'false'
+                'lightbox'   : 'false',
+                'exclude' : ''
                 };
             var shortcode = '[wzslider';
-            
+
             for( var index in options) {
                 var value = table.find('#wzslider-' + index).val();
-                
+
                 // attaches the attribute to the shortcode only if it's different from the default value
                 if ( value !== options[index] )
                     shortcode += ' ' + index + '="' + value + '"';
             }
-            
+
             shortcode += ']';
-            
+
             // inserts the shortcode into the active editor
             tinyMCE.activeEditor.execCommand('mceInsertContent', 0, shortcode);
-            
+
             // closes Thickbox
             tb_remove();
         });

@@ -23,12 +23,14 @@ class ui {
         if (!$feed) {
             bloginfo('rss2_url');
         } else {
-            echo option::get('misc_feedburner');
+            echo esc_url_raw(option::get('misc_feedburner'));
         }
     }
 
     /**
      * Smart pages title
+     *
+     * @deprecated Use `add_theme_support( 'title-tag )` instead
      */
     public static function title() {
         if (option::get('seo_enable') == 'off') {
@@ -37,21 +39,23 @@ class ui {
             return;
         }
 
-        if (is_front_page()) {
+        if ( is_front_page() && is_home() ) {
             if (option::get('seo_home_title') == 'Site Title - Site Description') echo get_bloginfo('name').option::get('title_separator').get_bloginfo('description');
             if (option::get('seo_home_title') == 'Site Description - Site Title') echo get_bloginfo('description').option::get('title_separator').get_bloginfo('name');
             if (option::get('seo_home_title') == 'Site Title') echo get_bloginfo('name');
-        }
-
-        #if the title is being displayed on single posts/pages
-        if (is_single() || is_page()) {
+        } elseif ( is_front_page() ) {
+            if (option::get('seo_home_title') == 'Site Title - Site Description') echo get_bloginfo('name').option::get('title_separator').get_bloginfo('description');
+            if (option::get('seo_home_title') == 'Site Description - Site Title') echo get_bloginfo('description').option::get('title_separator').get_bloginfo('name');
+            if (option::get('seo_home_title') == 'Site Title') echo get_bloginfo('name');
+        } elseif ( is_home() ) {
             if (option::get('seo_posts_title') == 'Site Title - Page Title') echo get_bloginfo('name').option::get('title_separator').wp_title('',false,'');
             if (option::get('seo_posts_title') == 'Page Title - Site Title') echo wp_title('',false,'').option::get('title_separator').get_bloginfo('name');
             if (option::get('seo_posts_title') == 'Page Title') echo wp_title('',false,'');
-        }
-
-        #if the title is being displayed on index pages (categories/archives/search results)
-        if (is_category() || is_archive() || is_search()) {
+        } elseif (is_single() || is_page()) {
+            if (option::get('seo_posts_title') == 'Site Title - Page Title') echo get_bloginfo('name').option::get('title_separator').wp_title('',false,'');
+            if (option::get('seo_posts_title') == 'Page Title - Site Title') echo wp_title('',false,'').option::get('title_separator').get_bloginfo('name');
+            if (option::get('seo_posts_title') == 'Page Title') echo wp_title('',false,'');
+        } else {
             if (option::get('seo_pages_title') == 'Site Title - Page Title') echo get_bloginfo('name').option::get('title_separator').wp_title('',false,'');
             if (option::get('seo_pages_title') == 'Page Title - Site Title') echo wp_title('',false,'').option::get('title_separator').get_bloginfo('name');
             if (option::get('seo_pages_title') == 'Page Title') echo wp_title('',false,'');
@@ -120,31 +124,67 @@ class ui {
         return false;
     }
 
-    public static function thumbIt($image, $width, $height, $return = false, $location = 'c') {
-        if (!$image) {
-            return false;
+    /**
+     * Takes an image URL (or attachment ID) and returns a URL to a version of that same image that is equal in dimensions to the passed $width and $height parameters
+     * The image will be resized on-the-fly, saved, and returned if an image of that same size doesn't already exist in the media library
+     *
+     * @param string|int $image The image URL or attachment ID whose resized version the function should return
+     * @param int $width The desired width of the returned image
+     * @param int $height The desired height of the returned image
+     * @param boolean $crop Should the image be cropped to the desired dimensions (Defaults to false in which case the image is scaled down, rather than cropped)
+     * @return string
+     */
+    public static function thumbIt( $image, $width, $height, $crop = true ) {
+        global $wpdb;
+
+        if ( is_int( $image ) ) {
+            $attachment_id = $image > 0 ? $image : false;
+        } else {
+            $img_url = esc_url( $image );
+            $upload_dir = wp_upload_dir();
+            $base_url = $upload_dir['baseurl'];
+            if ( substr( $img_url, 0, strlen( $base_url ) ) !== $base_url ) return $image;
+            $result = $wpdb->get_var( $wpdb->prepare( "SELECT post_id FROM $wpdb->postmeta WHERE meta_key = '_wp_attachment_metadata' AND meta_value LIKE %s LIMIT 1;", '%' . wpdb::esc_like( str_replace( trailingslashit( $base_url ), '', $img_url ) ) . '%' ) );
+            $attachment_id = absint( $result ) > 0 ? absint( $result ) : false;
         }
 
-        global $blog_id;
+        if ( $attachment_id === false ) return $image;
 
-        $imageParts = explode('/files/', $image);
+        $image = wp_get_attachment_url( $attachment_id );
 
-        $filehost = parse_url($image);
-        $localhost = $_SERVER['HTTP_HOST'];
+        $attachment_meta = wp_get_attachment_metadata( $attachment_id );
+        if ( $attachment_meta === false ) return $image;
 
-        if (isset($imageParts[1]) && ($filehost['host'] == $localhost)) {
-            $image = '/blogs.dir/' . $blog_id . '/files/' . $imageParts[1];
+        $width = absint( $width );
+        $height = absint( $height );
+        $needs_resize = true;
+
+        foreach ( $attachment_meta['sizes'] as $size ) {
+            if ( $width === $size['width'] && $height === $size['height'] ) {
+                $image = str_replace( basename( $image ), $size['file'], $image );
+                $needs_resize = false;
+                break;
+            }
         }
 
-        $location = ui::getCropLocation($location);
+        if ( $needs_resize ) {
+            $attached_file = get_attached_file( $attachment_id );
+            $resized = image_make_intermediate_size( $attached_file, $width, $height, (bool)$crop );
 
-         $url = get_template_directory_uri() . '/functions/theme/thumb.php?src=' . $image . '&amp;w=' . $width . '&amp;h=' . $height . '&amp;zc=1' . '&amp;a=' . $location;
+            if ( !is_wp_error( $resized ) && $resized !== false ) {
+                $key = sprintf( 'resized-%dx%d', $width, $height );
+                $attachment_meta['sizes'][ $key ] = $resized;
+                $image = str_replace( basename( $image ), $resized['file'], $image );
+                wp_update_attachment_metadata( $attachment_id, $attachment_meta );
 
-        if ($return) {
-            return $url;
+                $backup_sizes = get_post_meta( $attachment_id, '_wp_attachment_backup_sizes', true );
+                if ( !is_array( $backup_sizes ) ) $backup_sizes = array();
+                $backup_sizes[ $key ] = $resized;
+                update_post_meta( $attachment_id, '_wp_attachment_backup_sizes', $backup_sizes );
+            }
         }
 
-        echo $url;
+        return $image;
     }
 
     /**
@@ -244,22 +284,9 @@ class ui {
      * @return boolean
      */
     public static function is_wp_version($is_ver) {
-        $wp_ver = explode('.', get_bloginfo('version'));
-        $is_ver = explode('.', $is_ver);
+        include( ABSPATH . WPINC . '/version.php' ); // $wp_version; // x.y.z
 
-        for($i = 0; $i <= count($is_ver); $i++) {
-            if (!isset($wp_ver[$i])) {
-                array_push($wp_ver, 0);
-            }
-        }
-
-        foreach ($is_ver as $i => $is_val) {
-            if ($wp_ver[$i] < $is_val) {
-                return false;
-            }
-        }
-
-        return true;
+        return version_compare($wp_version, $is_ver, '>=');
     }
 
     /**

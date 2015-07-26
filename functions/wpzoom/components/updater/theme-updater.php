@@ -36,7 +36,7 @@ class WPZOOM_Theme_Updater {
         if (is_wp_error($response) || 200 != wp_remote_retrieve_response_code($response)) {
             return 'Can\'t contact WPZOOM server. Please try again later.';
         }
-        
+
         $changelog = trim(wp_remote_retrieve_body($response));
         $changelog = maybe_unserialize($changelog);
 
@@ -57,7 +57,7 @@ class WPZOOM_Theme_Updater {
      *
      * @return bool true if new version if remote version is higher than local
      */
-    public function has_update() {
+    public static function has_update() {
         $remoteVersion = self::get_remote_version();
         $localVersion  = self::get_local_version();
 
@@ -66,10 +66,10 @@ class WPZOOM_Theme_Updater {
                 return true;
             }
         }
-        
+
         return false;
     }
-    
+
     /**
      * Adds notifications if there are new theme version available.
      * Runs on time a day
@@ -79,7 +79,7 @@ class WPZOOM_Theme_Updater {
     public static function check_update() {
         $lastChecked = (int) option::get('theme_last_checked');
         $temp_version = get_transient('wpzoom_temp_theme_version');
-        
+
         // force a check if we think theme was updated
         if (!$temp_version) {
             set_transient('wpzoom_temp_theme_version', WPZOOM::$themeVersion);
@@ -99,14 +99,14 @@ class WPZOOM_Theme_Updater {
             option::set('theme_last_checked', time());
         }
 
-        if (option::get('theme_status') == 'needs_update') {
+        if (option::get('theme_status') == 'needs_update' && current_user_can('update_themes')) {
             add_action('admin_notices', array(__CLASS__, 'notification'));
         }
     }
 
     /**
      * wp-admin global notification about new theme version release
-     * 
+     *
      * @return void
      */
     public static function notification() {
@@ -118,7 +118,26 @@ class WPZOOM_Theme_Updater {
 
         echo '<div class="zoomfw-theme update-nag">';
         echo 'A new version of <a href="' . $update_url . '">' . WPZOOM::$themeName . '</a> theme is available. ';
-        echo '<u><a href="http://wploy.wpzoom.com/changelog/' . WPZOOM::$theme_raw_name . '?TB_iframe=true" class="thickbox thickbox-preview">Check out what\'s new</a></u> or visit our tutorial on <u><a href="http://www.wpzoom.com/tutorial/how-to-update-a-wpzoom-theme/">updating themes</a></u>.'; 
+        echo '<u><a href="http://wploy.wpzoom.com/changelog/' . WPZOOM::$theme_raw_name . '?TB_iframe=true" class="thickbox thickbox-preview">Check out what\'s new</a></u> or visit our tutorial on <u><a href="http://www.wpzoom.com/tutorial/how-to-update-a-wpzoom-theme/">updating themes</a></u>.';
         echo ' <input type="button" class="close button" value="Hide" /></div>';
+    }
+
+    public static function disable_wporg_request($args, $url) {
+        if (0 !== strpos($url, 'https://api.wordpress.org/themes/update-check/1.1/') &&
+            0 !== strpos($url, 'http://api.wordpress.org/themes/update-check/1.1/')) {
+            return $args;
+        }
+
+        $themes = json_decode($args['body']['themes']);
+
+        $parent = get_option('template');
+        $child = get_option('stylesheet');
+
+        unset($themes->themes->$parent);
+        unset($themes->themes->$child);
+
+        $args['body']['themes'] = json_encode($themes);
+
+        return $args;
     }
 }

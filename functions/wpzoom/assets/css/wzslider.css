@@ -1,13 +1,11 @@
-/*
+/**
  * Galleria Classic Theme
  * Copyright (c) 2010, Aino
  * Licensed under the MIT license.
  */
- 
-
 #galleria { margin:20px 0; clear:both; }
 #galleria img { margin:0; }
-.galleria-errors {display:none;} 
+.galleria-errors {display:none;}
 
 .galleria-container {
     position: relative;

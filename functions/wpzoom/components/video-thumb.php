@@ -256,7 +256,7 @@ class WPZOOM_Video_Thumb extends WPZOOM_Video_API {
 	/**
 	 * Downloads and attaches the given remote thumbnail to the given post and returns the ID
 	 */
-	public static function attach_remote_video_thumb($thumb_url, $post_id) {
+	public static function attach_remote_video_thumb($thumb_url, $post_id, $size = null) {
 		if(!current_user_can('upload_files')) return false;
 
 		$thumb_url = trim($thumb_url);
@@ -264,9 +264,30 @@ class WPZOOM_Video_Thumb extends WPZOOM_Video_API {
 
 		if(empty($thumb_url) || filter_var($thumb_url, FILTER_VALIDATE_URL) === false || empty($post_id) || $post_id < 1) return false;
 
-		$fetch = self::fetch_video_thumbnail($thumb_url, $post_id);
-		if($fetch === false || !isset($fetch['thumb_url']) || empty($fetch['thumb_url'])) return false;
-		$url = $fetch['thumb_url'];
+		if(is_null($size)) {
+			$fetch = self::fetch_video_thumbnail($thumb_url, $post_id);
+			if($fetch === false || !isset($fetch['thumb_url']) || empty($fetch['thumb_url'])) return false;
+			$url = $fetch['thumb_url'];
+		} elseif($size == 'small' || $size == 'medium' || $size == 'large') {
+			$fetch = parent::fetch_extended_video_data($post_id);
+			if($fetch === false) return false;
+
+			$small = isset($fetch['thumbnail']['sqDefault']) ? $fetch['thumbnail']['sqDefault'] : ( isset($fetch['thumbnail_small']) ? $fetch['thumbnail_small'] : false );
+			$medium = isset($fetch['thumbnail']['mqDefault']) ? $fetch['thumbnail']['mqDefault'] : ( isset($fetch['thumbnail_medium']) ? $fetch['thumbnail_medium'] : false );
+			$large = isset($fetch['thumbnail']['hqDefault']) ? $fetch['thumbnail']['hqDefault'] : ( isset($fetch['thumbnail_large']) ? $fetch['thumbnail_large'] : false );
+
+			if($small === false && $medium === false && $large === false) return false;
+
+			if($size == 'small') {
+				return $small !== false ? $small : ( $medium !== false ? $medium : ( $large !== false ? $large : false ) );
+			} elseif($size == 'medium') {
+				return $medium !== false ? $medium : ( $small !== false ? $small : ( $large !== false ? $large : false ) );
+			} elseif($size == 'large') {
+				return $large !== false ? $large : ( $medium !== false ? $medium : ( $small !== false ? $small : false ) );
+			}
+		} else {
+			return false;
+		}
 
 		if(false === ($id=self::thumb_attachment_exists($url, $post_id)) || $id < 1) {
 			$id = self::media_sideload_image($url, $post_id);
@@ -374,7 +395,11 @@ class WPZOOM_Video_Thumb extends WPZOOM_Video_API {
 		$url = parent::extract_url_from_embed(trim($embed_code));
 		if($url === false) return false;
 
-		$fetch = self::fetch_video_thumbnail($url, $post_id);
-		return $fetch !== false && isset($fetch['thumb_url']) && !empty($fetch['thumb_url']) ? array('src' => $fetch['thumb_url']) : false;
+		$size = class_exists('option') && in_array(option::get('video_api_size'), array('Small', 'Medium', 'Large')) ? strtolower(''.option::get('video_api_size')) : null;
+		$attachment_id = self::attach_remote_video_thumb($url, $post_id, $size);
+		if($attachment_id === false || $attachment_id < 1) return false;
+
+		$attachment_image_src = wp_get_attachment_image_src($attachment_id);
+		return $attachment_image_src !== false && is_array($attachment_image_src) && isset($attachment_image_src[0]) && !empty($attachment_image_src[0]) ? array('src' => ''.$attachment_image_src[0]) : false;
 	}
 }

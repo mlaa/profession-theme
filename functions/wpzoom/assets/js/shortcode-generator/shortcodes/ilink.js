@@ -15,9 +15,8 @@ wpzShortcodeMeta={
         {
             label:"Style",
             id:"style",
-            help:"Values: download, note, tick, info.",
             controlType:"select-control", 
-            selectValues:['', 'download', 'note', 'tick'],
+            selectValues:['', 'download', 'alert', 'note', 'tick'],
             defaultValue: '', 
             defaultText: 'info (Default)'
         },

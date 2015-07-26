@@ -1,4 +1,8 @@
 /**
+ * WordPress wp-admin wide functionality.
+ */
+
+/**
  * Framework .update-nag notification close button.
  */
 jQuery(document).ready(function($) {
@@ -37,6 +41,25 @@ jQuery(document).ready(function($) {
             type: 'theme-notification-hide',
             action: 'wpzoom_updater',
             value: 'framework'
+        };
+
+        $.post(ajaxurl, data);
+    });
+
+    $('.zoomfw-seo.update-nag .close').click(function() {
+        var ask = confirm(
+            'This notification will be hidden forever. ' +
+            'Please take care to make required changes to be safe before next update'
+        );
+
+        if (!ask) return;
+
+        $(this).parent().remove();
+
+        var data = {
+            type: 'seo-notification-hide',
+            action: 'wpzoom_updater',
+            value: 'seo'
         };
 
         $.post(ajaxurl, data);

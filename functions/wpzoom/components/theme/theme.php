@@ -10,7 +10,8 @@ class WPZOOM_Theme {
             add_action('wp_head', array(__CLASS__, 'meta_generator'));
         }
 
-        if (get_option('blog_public') != 0) {
+        // disable seo options in new themes, later this will be removed completely
+        if (get_option('blog_public') != 0 && WPZOOM::$theme_raw_name != 'angle' && WPZOOM::$theme_raw_name != 'compass') {
             add_action('wp_head', array(__CLASS__, 'seo'), 1);
             add_action('wp_head', array(__CLASS__, 'canonical'), 1);
         }
@@ -19,7 +20,7 @@ class WPZOOM_Theme {
         add_action('wp_head', array(__CLASS__, 'generate_options_css'));
         add_action('wp_head', array(__CLASS__, 'header_code'));
 
-        add_action('wp_enqueue_scripts', array(__CLASS__, 'theme_styles'));
+        add_action('wp_enqueue_scripts', array(__CLASS__, 'theme_styles'), 20);
         add_action('wp_enqueue_scripts', array(__CLASS__, 'theme_scripts'));
 
         add_action('wp_footer', array(__CLASS__, 'footer_code'));
@@ -41,15 +42,15 @@ class WPZOOM_Theme {
      */
     public static function header_code() {
         $header_code = trim(stripslashes(option::get('header_code')));
-        
+
         if ($header_code) {
             echo stripslashes(option::get('header_code'));
         }
     }
-    
+
     public static function footer_code() {
         $footer_code = trim(stripslashes(option::get('footer_code')));
-        
+
         if ($footer_code) {
             echo stripslashes(option::get('footer_code'));
         }
@@ -72,7 +73,7 @@ class WPZOOM_Theme {
 
         echo '<meta name="keywords" content="'.$meta_post_keywords.'" />' . "\n";
     }
-    
+
     /**
      * Keywords meta tag for SEO on homepage
      */
@@ -82,7 +83,7 @@ class WPZOOM_Theme {
             echo '<meta name="keywords" content="' . $keywords . '" />' . "\n";
         }
     }
-    
+
     /**
      * Canonical meta tag for SEO
      */
@@ -90,16 +91,16 @@ class WPZOOM_Theme {
         global $wp_query;
 
         if(option::is_on('canonical')) {
-        
+
             #homepage urls
             if (is_home() )echo '<link rel="canonical" href="'.get_bloginfo('url').'" />';
-            
+
             #single page urls
             $postid = $wp_query->post->ID;
-            
+
             if (is_single() || is_page()) echo '<link rel="canonical" href="'.get_permalink().'" />';
-            
-            #index page urls            
+
+            #index page urls
             if (is_archive() || is_category() || is_search()) echo '<link rel="canonical" href="'.get_permalink().'" />';
         }
     }
@@ -126,7 +127,7 @@ class WPZOOM_Theme {
                 echo '<meta name="description" content="' . self::description() . '" />' . "\n";
                 self::metaHomeKeywords();
             }
-            
+
             self::index();
         }
     }
@@ -140,7 +141,7 @@ class WPZOOM_Theme {
         if(!empty($post)){
             $post_id = $post->ID;
         }
-        
+
         /* Robots */
         $index = 'index';
         $follow = 'follow';
@@ -196,10 +197,10 @@ class WPZOOM_Theme {
         $mg = "<!-- WPZOOM Theme / Framework -->\n";
         $mg.= '<meta name="generator" content="' . WPZOOM::$themeName . ' ' . WPZOOM::$themeVersion . '" />' . "\n";
         $mg.= '<meta name="generator" content="WPZOOM Framework ' . WPZOOM::$wpzoomVersion . '" />' . "\n";
-        
+
         echo $mg;
     }
-    
+
     /**
      * Include css file for specified style
      */
@@ -207,15 +208,28 @@ class WPZOOM_Theme {
         /**
          * If current theme supports styles use them
          */
-        if (WPZOOM::$config['styled']) {
+        if (option::get('theme_style')) {
             $style = str_replace(" ", "-", strtolower(option::get('theme_style')));
 
-            wp_register_style('wpzoom-theme', get_template_directory_uri() . '/styles/' . $style . '.css');
-            wp_enqueue_style('wpzoom-theme');
+            if (file_exists(get_template_directory() . '/styles/' . $style . '.css')) {
+                wp_register_style('wpzoom-theme', get_template_directory_uri() . '/styles/' . $style . '.css');
+                wp_enqueue_style('wpzoom-theme');
+            }
         }
 
-        wp_register_style('wpzoom-custom', get_template_directory_uri() . '/custom.css');
-        wp_enqueue_style('wpzoom-custom');
+        /**
+         * Deprecated file, but we still register this stylesheet for
+         * backwards comptability.
+         */
+        if (file_exists(get_template_directory() . '/custom.css')) {
+            wp_register_style('wpzoom-custom', get_template_directory_uri() . '/custom.css');
+            wp_enqueue_style('wpzoom-custom');
+        }
+
+        if (file_exists(get_template_directory() . '/css/custom.css')) {
+            wp_register_style('theme-custom', get_template_directory_uri() . '/css/custom.css');
+            wp_enqueue_style('theme-custom');
+        }
     }
 
     public static function theme_scripts() {
@@ -224,15 +238,21 @@ class WPZOOM_Theme {
         }
 
         /**
-         * Enqueue initialization script, HTML5 Shim included
+         * Enqueue initialization script, HTML5 Shim included.
+         *
+         * Only if this file exists.
          */
-        wp_enqueue_script('wpzoom-init',  get_template_directory_uri() . '/js/init.js', array('jquery'));
-        
+        if (file_exists(get_template_directory() . '/js/init.js')) {
+            wp_enqueue_script('wpzoom-init',  get_template_directory_uri() . '/js/init.js', array('jquery'));
+        }
+
         /**
          * Enqueue all theme scripts specified in config file to the footer
          */
-        foreach (WPZOOM::$config['scripts'] as $script) {
-            wp_enqueue_script('wpzoom-' . $script,  get_template_directory_uri() . '/js/' . $script . '.js', array(), false, true);
+        if (isset(WPZOOM::$config['scripts'])) {
+            foreach (WPZOOM::$config['scripts'] as $script) {
+                wp_enqueue_script('wpzoom-' . $script,  get_template_directory_uri() . '/js/' . $script . '.js', array(), false, true);
+            }
         }
     }
 
@@ -246,7 +266,7 @@ class WPZOOM_Theme {
             foreach ($Eoption as $option) {
                 if ((isset($option['type']) && $option['type'] == 'color') || isset($option['css'])) {
                     $value = option::get($option['id']);
-                    if (!trim($value) != "") continue;                    
+                    if (!trim($value) != "") continue;
                     $enable = true;
 
                     if (in_array($option['attr'], array('height', 'width')) &&
@@ -254,7 +274,7 @@ class WPZOOM_Theme {
                         $value = $value . 'px';
                     }
 
-                    $css .= "{$option['selector']}{{$option['attr']}:$value;}\n";
+                    $css .= $option['selector'] . '{' . $option['attr'] . ':' . $value . ";}\n";
                 }
 
                 if ((isset($option['type']) && $option['type'] == 'typography')) {
@@ -263,7 +283,7 @@ class WPZOOM_Theme {
                 }
             }
         }
-        
+
         if ($enable) {
             echo '<style type="text/css">';
             echo self::dynamic_google_webfonts_css();
@@ -275,7 +295,7 @@ class WPZOOM_Theme {
     /**
      * Registers Google Web Fonts in use so later we know what fonts
      * to include from Web Fonts directory
-     * 
+     *
      * @param  array $font Font data
      * @return void
      */
@@ -285,7 +305,7 @@ class WPZOOM_Theme {
 
     /**
      * Generates CSS import for used Google Web Fonts
-     * 
+     *
      * @return string The CSS Import String
      */
     public static function dynamic_google_webfonts_css() {
@@ -315,7 +335,6 @@ class WPZOOM_Theme {
 
         if (!is_array($value)) return '';
 
-        $google_fonts = array();
         $font = array();
 
         if (isset($value['font-color']) && trim($value['font-color'])) {
@@ -336,7 +355,7 @@ class WPZOOM_Theme {
                 $key = str_replace(' ', '-', strtolower($google_font_v['name']));
 
                 if ($value['font-family'] == $key) {
-                    $font[] = "font-family: " . $google_font_v['name'] . ";";
+                    $font[] = "font-family: '" . $google_font_v['name'] . "';";
                     self::dynamic_google_webfonts_register($google_font_v);
 
                     break;

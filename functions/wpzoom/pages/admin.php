@@ -10,8 +10,8 @@
         <div id="zoomSuccess">
             <p>Options successful saved</p>
         </div>
-        <div id="zoomFail"> 
-            <p>Can't save options. Please contact <a href="http://wpzoom.com/forum">WPZOOM support</a>.</p>
+        <div id="zoomFail">
+            <p>Can't save options. Please contact <a href="http://wpzoom.com/support/">WPZOOM Support</a>.</p>
         </div>
         <div id="zoomLogo">
             <?php if (!wpzoom::$tf) : ?>
@@ -40,7 +40,7 @@
                 <?php endif; ?>
 
                 <li class="support">
-                    <a href="http://www.wpzoom.com/forum" target="_blank">Support Forum</a>
+                    <a href="http://www.wpzoom.com/support/" target="_blank">Support Desk</a>
                 </li>
             </ul>
         </div>
@@ -60,13 +60,13 @@
                 <?php wp_nonce_field('wpzoom-ajax-save'); ?>
                 <input type="hidden" id="nonce" name="_ajax_nonce" value="<?php echo wp_create_nonce('wpzoom-ajax-save'); ?>" />
             </form>
-            
+
         </div><!-- end .tab_container -->
         <div class="clear"></div>
     </div> <!-- /.admin_main -->
-    
+
     <div class="zoomActionButtons">
-       
+
         <form id="zoomReset" method="post">
             <p class="submit" style="float:right;" />
                 <input name="reset" class="button-secondary" type="submit" value="Reset settings" />

@@ -10,7 +10,7 @@ class WPZOOM_Admin_Settings_Interface {
 
     public function add_field($type, $args) {
         $type = str_replace('-', '_', $type);
-        
+
         if (!method_exists($this->settings_fields, $type)) {
             return false;
         }
@@ -30,7 +30,10 @@ class WPZOOM_Admin_Settings_Interface {
             $this->content.= '<div class="wpz_option_container clear">';
         }
 
-        $this->content.= call_user_func_array(array($this->settings_fields, $type), $args);
+        $this->content.= call_user_func_array(
+            array($this->settings_fields, $type),
+            array(apply_filters('zoom_field_' . $args[0]['id'], $args[0]))
+        );
 
         if (!in_array($type, $skipforend)) {
              $this->content.= '<div class="cleaner"></div>';

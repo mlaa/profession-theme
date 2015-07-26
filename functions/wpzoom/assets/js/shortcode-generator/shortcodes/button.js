@@ -15,28 +15,27 @@ wpzShortcodeMeta={
             {
                 label:"Size",
                 id:"size",
-                help:"Values: &lt;empty&gt; for normal size, small, large, xl.", 
-                controlType:"select-control", 
+                help:"Values: &lt;empty&gt; for normal size, small, large, xl.",
+                controlType:"select-control",
                 selectValues:['small', '', 'large', 'xl'],
-                defaultValue: '', 
+                defaultValue: '',
                 defaultText: 'medium (Default)'
             },
             {
-                label:"Style",
-                id:"style",
-                help:"Values: &lt;empty&gt;, info, alert, tick, download, note.",
-                controlType:"select-control", 
-                selectValues:['', 'info', 'alert', 'tick', 'download', 'note'],
-                defaultValue: '', 
+                label:"Icon",
+                id:"icon",
+                help:"Choose an icon.",
+                controlType:"awsm-icon-control",
+                defaultValue:'',
                 defaultText: 'none (Default)'
             },
             {
                 label:"Predefined Style",
                 id:"color",
-                help:'Optionally use one of our predefined styles (this overrides the custom colour settings).', 
-                controlType:"select-control", 
+                help:'Optionally use one of our predefined styles (this overrides the custom colour settings).',
+                controlType:"select-control",
                 selectValues:['', 'red', 'orange', 'green', 'aqua', 'teal', 'purple', 'pink', 'silver'],
-                defaultValue: '', 
+                defaultValue: '',
                 defaultText: 'none (Default)'
             },
             {
@@ -54,10 +53,10 @@ wpzShortcodeMeta={
             {
                 label:"Dark Text?",
                 id:"text",
-                help:'Leave empty for light text color or use "dark" (for light background color buttons).', 
-                controlType:"select-control", 
+                help:'Leave empty for light text color or use "dark" (for light background color buttons).',
+                controlType:"select-control",
                 selectValues:['', 'dark'],
-                defaultValue: '', 
+                defaultValue: '',
                 defaultText: 'light (Default)'
             },
             {
@@ -68,10 +67,10 @@ wpzShortcodeMeta={
             {
                 label:"Open in a new window",
                 id:"window",
-                help:"Optionally open this link in a new window.", 
-                controlType:"select-control", 
+                help:"Optionally open this link in a new window.",
+                controlType:"select-control",
                 selectValues:['', 'yes'],
-                defaultValue: '', 
+                defaultValue: '',
                 defaultText: 'no (Default)'
             }
             ],

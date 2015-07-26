@@ -5,7 +5,7 @@ class WPZOOM_Admin_Settings_Page {
         if (isset($_POST['action']) && $_POST['action'] == 'reset') {
             option::reset();
         }
-        
+
         add_action('admin_enqueue_scripts',             array(__CLASS__, 'load_assets'));
         add_action('admin_print_styles',                array(__CLASS__, 'fonts_families_preview'));
 
@@ -19,9 +19,13 @@ class WPZOOM_Admin_Settings_Page {
     }
 
     public static function load_assets() {
+        if (function_exists('wp_enqueue_media')) {
+            wp_enqueue_media();
+        }
+
         wp_enqueue_script('wpzoom-options', WPZOOM::$assetsPath . '/js/zoomAdmin.js', array('jquery', 'thickbox'), WPZOOM::$wpzoomVersion);
-        wp_enqueue_style('wpzoom-options', WPZOOM::$assetsPath . '/options.css', array(), WPZOOM::$wpzoomVersion);
-        
+        wp_enqueue_style('wpzoom-options', WPZOOM::$assetsPath . '/options.css', array('thickbox'), WPZOOM::$wpzoomVersion);
+
         // Register the colourpicker JavaScript.
         wp_register_script( 'wpz-colourpicker', WPZOOM::$assetsPath . '/js/colorpicker.js', array( 'jquery' ), WPZOOM::$wpzoomVersion, true ); // Loaded into the footer.
         wp_enqueue_script( 'wpz-colourpicker' );
@@ -38,39 +42,57 @@ class WPZOOM_Admin_Settings_Page {
         $menu = option::$evoOptions['menu'];
         $out = '<ul class="tabs">';
 
-        foreach ($menu as $item) {
+        foreach ($menu as $key => $item) {
+            // Don't show seo options
+            if ($item['name'] == 'SEO' && WPZOOM::$theme_raw_name == 'angle') continue;
+            if ($item['name'] == 'SEO' && WPZOOM::$theme_raw_name == 'compass') continue;
+
             $class = strtolower(str_replace(" ", "_", preg_replace("/[^a-zA-Z0-9\s]/", "", $item['name'])));
-            
-            $out.= '<li class="' . $class . ' wz-parent" id="wzm-' . $class . '"><a href="#tab' . $item['id'] . '">' . $item['name'] . '</a><em></em>';
+
+            if (isset($item['id'])) {
+                $out.= '<li class="' . $class . ' wz-parent" id="wzm-' . $class . '"><a href="#tabid' . $item['id'] . '">' . $item['name'] . '</a><em></em>';
+            } else {
+                $out.= '<li class="' . $class . ' wz-parent" id="wzm-' . $class . '"><a href="#tab' . $key . '">' . $item['name'] . '</a><em></em>';
+            }
+
             $out.= '<ul>';
-            foreach (option::$evoOptions['id' . $item['id']] as $submenu) {
+
+            if ( ! is_string ( $key ) ) {
+                $sub_sections = option::$evoOptions['id' . $item['id']];
+            } else {
+                $sub_sections = option::$evoOptions[$key];
+            }
+
+            foreach ($sub_sections as $submenu) {
                 if ($submenu['type'] == 'preheader') {
                     $name = $submenu['name'];
-                    
-                    $stitle = 'wpz_' . substr(md5($name), 0, 8);    
-                    
+
+                    $stitle = 'wpz_' . substr(md5($name), 0, 8);
+
                     $out.= '<li class="sub"><a href="#' . $stitle . '">' . $name . '</a></li>';
-                }    
+                }
             }
             $out.= '</ul>';
             $out.= '</li>';
         }
-        
+
         $out.= '</ul>';
-        
+
         echo $out;
     }
-    
+
     public static function content() {
         $options = option::$evoOptions;
-        $tabs = array();
 
         unset($options['menu']);
 
         $settings_ui = new WPZOOM_Admin_Settings_Interface;
 
         foreach ($options as $tab_id => $tab_content) {
-            $tab_id = preg_replace("/[^0-9]/", '', $tab_id);
+            // Don't show seo options
+            if ($tab_id == 'id3' && WPZOOM::$theme_raw_name == 'angle') continue;
+            if ($tab_id == 'id3' && WPZOOM::$theme_raw_name == 'compass') continue;
+
             $settings_ui->add_tab($tab_id);
 
             foreach ($tab_content as $field) {
@@ -97,7 +119,7 @@ class WPZOOM_Admin_Settings_Page {
             }
 
             $settings_ui->end_tab();
-            $settings_ui->flush_content(); 
+            $settings_ui->flush_content();
         }
 
     }
@@ -111,14 +133,13 @@ class WPZOOM_Admin_Settings_Page {
             array(
                  'id'       => 'zoom-welcome'
                 ,'title'    => 'Overview'
-                ,'content'  => '<p>Some themes provide customization options that are grouped together on a Theme Options screen. If you change themes, options may change or disappear, as they are theme-specific. </p><p>Your current theme is running on <a href="http://www.wpzoom.com/framework-tour/" target="_blank">ZOOM Framework</a>. The <strong>ZOOM framework</strong> is designed to ease the process of customizing WPZOOM themes. The many options available allow you to change almost every aspect of your WPZOOM theme without needing to know how to write any sort of code. The framework has also been designed to stay as consistent as possible across all WPZOOM themes so you can take your knowledge from one theme to another with ease.
-</p>'
+                ,'content'  => '<p>Some themes provide customization options that are grouped together on a Theme Options screen. If you change themes, options may change or disappear, as they are theme-specific. </p><p>Your current theme is running on <a href="http://www.wpzoom.com/framework-tour/" target="_blank">ZOOM Framework</a>. The <strong>ZOOM framework</strong> is designed to ease the process of customizing WPZOOM themes. The many options available allow you to change almost every aspect of your WPZOOM theme without needing to know how to write any sort of code. The framework has also been designed to stay as consistent as possible across all WPZOOM themes so you can take your knowledge from one theme to another with ease.</p>'
             )
         );
 
         $sidebar = '<p><strong>' . __( 'For more information:', 'wpzoom' ) . '</strong></p>' .
         '<p>' . __( '<a href="http://www.wpzoom.com/support/documentation" target="_blank">Documentation and Tutorials</a>', 'wpzoom' ) . '</p>' .
-        '<p>' . __( '<a href="http://www.wpzoom.com/forum/" target="_blank">Support Forums</a>', 'wpzoom' ) . '</p>';
+        '<p>' . __( '<a href="http://www.wpzoom.com/support/" target="_blank">Support Desk</a>', 'wpzoom' ) . '</p>';
 
         $screen->set_help_sidebar( $sidebar );
 
@@ -127,11 +148,10 @@ class WPZOOM_Admin_Settings_Page {
             array(
                  'id'       => 'zoom-seo'
                 ,'title'    => 'About SEO'
-                ,'content'  => '<p>The SEO options (or Search Engine Optimization options) help make your site more visible to major search engines like Google, Bing, etc. By simply filling in the necessary fields you can ensure people will be able to easily find your site no matter where they are coming from.
-</p>'
+                ,'content'  => '<p>The SEO options (or Search Engine Optimization options) help make your site more visible to major search engines like Google, Bing, etc. By simply filling in the necessary fields you can ensure people will be able to easily find your site no matter where they are coming from.</p>'
             )
         );
- 
+
         $screen->add_help_tab(
             array(
                  'id'       => 'zoom-import'
@@ -139,7 +159,7 @@ class WPZOOM_Admin_Settings_Page {
                 ,'content'  => "<p>The <Strong>ZOOM Framework</strong> has the ability to import and export various theme and widget settings. This allows you to easily transfer specific setups between different sites and also to backup settings so you won't ever lose them.</p>"
             )
         );
- 
+
     }
 
     /**
@@ -151,16 +171,18 @@ class WPZOOM_Admin_Settings_Page {
         parse_str($_POST['data'], $data);
 
         check_ajax_referer('wpzoom-ajax-save', '_ajax_nonce');
-        
+
         if ($data['misc_import']) {
             option::setupOptions($data['misc_import'], true);
-            die('success');
+            wp_send_json_success();
         }
-        
+
         if ($data['misc_import_widgets']) {
             option::setupWidgetOptions($data['misc_import_widgets'], true);
-            die('success');
+            wp_send_json_success();
         }
+
+        new WPZOOM_Admin_Settings_Sanitization();
 
         foreach(option::$options as $name => $null) {
             $ignored = array('misc_export', 'misc_export_widgets', 'misc_debug');
@@ -168,20 +190,27 @@ class WPZOOM_Admin_Settings_Page {
 
             if (isset($data[$name])) {
                 $value = $data[$name];
-                
+
                 if (!is_array($data[$name])) {
                     $value = stripslashes($value);
                 }
-
-                option::set($name, $value);
             } else {
-                option::set($name, 'off');
+                $value = 'off';
             }
+
+            /*
+             * Filter for custom options validators.
+             */
+            $value = apply_filters( 'zoom_field_save_' . $name, $value );
+
+            option::set($name, $value);
         }
 
-        die('success');
+        do_action( 'zoom_after_options_save' );
+
+        wp_send_json_success();
     }
-    
+
     /**
      * Handle Ajax calls for widgets default.
      *
@@ -189,21 +218,26 @@ class WPZOOM_Admin_Settings_Page {
      */
     public static function ajax_widgets_default() {
         check_ajax_referer('wpzoom-ajax-save', '_ajax_nonce');
-        
-        $settingsFile = THEME_INC . "/widgets/default.json";
-        
+
+        $settingsFile = FUNC_INC . "/widgets/default.json";
+
+        /* backwards compatibility */
+        if (!file_exists($settingsFile) && defined('THEME_INC')) {
+            $settingsFile = THEME_INC . "/widgets/default.json";
+        }
+
         if (file_exists($settingsFile)) {
             $settings = file_get_contents($settingsFile);
 
             option::setupWidgetOptions($settings, true);
         }
-        
-        die('success');
+
+        wp_send_json_success();
     }
 
     /**
      * Generates CSS to preview Typography Fonts families
-     * 
+     *
      * @return void
      */
     public static function fonts_families_preview() {
@@ -238,7 +272,7 @@ class WPZOOM_Admin_Settings_Page {
             echo $css;
         echo '</style>';
     }
-    
+
     /**
      * Get debug information
      *
@@ -296,5 +330,5 @@ class WPZOOM_Admin_Settings_Page {
 
         // return debug text
         return $debug;
-    }  
+    }
 }

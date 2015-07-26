@@ -1,39 +1,40 @@
 <div class="wrap">
     <div class="icon32" id="icon-tools"><br></div>
-    <h2>WPZOOM Framework Update</h2>
-     
-    <div>
+    <h2>ZOOM Framework Update</h2>
+
         <?php
         $isUpdated = false;
-        
+
         $remoteVersion = WPZOOM_Framework_Updater::get_remote_version();
         $localVersion = WPZOOM_Framework_Updater::get_local_version();
-        
+
         if (preg_match('/[0-9]*\.?[0-9]+/', $remoteVersion)) {
-        
+
             if (version_compare($localVersion, $remoteVersion) < 0) {
                 $isUpdated = true;
             }
-        
+
         } else {
             echo '<p>' . $remoteVersion . '</p>';
         }
         ?>
-        
+
         <?php if ($isUpdated) : ?>
-            <form method="post" id="wpzoom-update">
-                <h3>A new version of WPZOOM Framework is available.</h3>
-                <p>This updater will download and extract the latest WPZOOM Framework files to your current theme's functions folder. </p>
-                <p>Only the WPZOOM Framework files will be updated with this functionality, so we recommend backing up your theme or modified files before updating.</p>
-                <p>&rarr; <strong>Your version:</strong> <?php echo $localVersion; ?></p>
-                <p>&rarr; <strong>Remote version:</strong> <?php echo $remoteVersion; ?></p>
-                <input type="hidden" name="wpzoom-update-do" value="update" />
-                <input type="submit" class="button" value="Update WPZOOM Framework" />
-            </form>
-            <br><br>
+
+            <div style="border: 1px solid #E6DB55;background-color: #FFFBCC;color: #424242;padding: 10px;margin-top: 20px;border-radius:4px;">
+                A new ZOOM Framework update is available.
+                <p><strong>Important:</strong> Backup your theme and modified files before updating. For help visit <a href="http://www.wpzoom.com/docs/using-the-zoom-framework-automatic-updates/">Using the ZOOM Framework automatic updates</a>.</p>
+
+                <form method="post" id="wpzoom-update">
+                    <input type="hidden" name="wpzoom-update-do" value="update" />
+                    We recommend you to &nbsp;<input type="submit" class="button button-primary" value="Update Automatically" />
+                    &nbsp; or you can &nbsp;<a href="http://framework.wpzoom.com/wpzoom-framework.zip" class="button">Download Update</a>&nbsp; and install it manually in the <code>functions/wpzoom/</code> folder.
+                </form>
+            </div>
+
             <?php if (method_exists('WPZOOM_Framework_Updater', 'get_changelog')) : ?>
             <h3>Changelog</h3>
-            <div style="height: 200px; max-width: 810px; overflow: scroll; overflow-x: hidden; overflow-y: scroll; border: 1px solid #ccc; border-radius:3px; padding: 0 10px; background: #F8F8F8; font-size: 11px;">
+            <div style="height: 400px; overflow: scroll; border: 1px solid #ccc; border-radius:3px; padding: 0 10px; background: #F8F8F8; font-size: 12px;">
                 <?php
                 $start = false;
                 $changelog = WPZOOM_Framework_Updater::get_changelog();
@@ -53,5 +54,4 @@
             <p>&rarr; <strong>You are using latest framework version:</strong> <?php echo $localVersion; ?></p>
             <?php option::delete('framework_status'); ?>
         <?php endif; ?>
-    </div>
 </div><!-- end .wrap -->

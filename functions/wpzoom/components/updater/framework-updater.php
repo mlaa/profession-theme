@@ -29,7 +29,7 @@ class WPZOOM_Framework_Updater {
             set_transient('framework_version', WPZOOM::$wpzoomVersion);
         }
 
-        if (option::get('framework_status') == 'needs_update') {
+        if (option::get('framework_status') == 'needs_update' && current_user_can('update_themes')) {
             add_action('admin_notices', array(__CLASS__, 'notification'));
         }
 
@@ -38,7 +38,7 @@ class WPZOOM_Framework_Updater {
     /**
      * Checks if a new ZOOM Framework version is available.
      */
-    public function has_update() {
+    public static function has_update() {
         $remoteVersion = self::get_remote_version();
         $localVersion  = self::get_local_version();
 
@@ -47,7 +47,7 @@ class WPZOOM_Framework_Updater {
                 return true;
             }
         }
-        
+
         return false;
     }
 
@@ -80,7 +80,7 @@ class WPZOOM_Framework_Updater {
         if (is_wp_error($response) || 200 != wp_remote_retrieve_response_code($response)) {
             return 'Can\'t contact WPZOOM server. Please try again later.';
         }
-        
+
         $version = trim(wp_remote_retrieve_body($response));
         $version = maybe_unserialize($version);
 
@@ -115,7 +115,7 @@ class WPZOOM_Framework_Updater {
     }
 
     public static function notification() {
-        $msg = sprintf('You are using an older version of WPZOOM Framework, please check the <a href="%s">update page</a>. <input type="button" class="close button" value="Hide" />', admin_url('admin.php?page=wpzoom_update'));
+        $msg = sprintf('You are using an outdated version of ZOOM Framework, please <a href="%s">update now</a>. <input type="button" class="close button" value="Hide" />', admin_url('admin.php?page=wpzoom_update'));
 
         echo '<div class="update-nag zoomfw-core">' . $msg . '</div>';
     }
@@ -129,32 +129,32 @@ class WPZOOM_Framework_Updater {
         if (!isset($_GET['page'])) return;
 
         $requestedPage = strtolower(strip_tags(trim($_REQUEST['page'])));
-        
+
         if ($requestedPage != 'wpzoom_update') return;
-        
+
         $fsmethod = get_filesystem_method();
         $fs = WP_Filesystem();
-        
+
         if ($fs == false) {
             function framework_update_filesystem_warning() {
                 $method = get_filesystem_method();
                 echo "<p>Failed: Filesystem preventing downloads. ($method)</p>";
             }
             add_action( 'admin_notices', 'framework_update_filesystem_warning' );
-            
+
             return;
         }
-        
+
         if (isset($_POST['wpzoom-update-do'])) {
             $action = strtolower(trim(strip_tags($_POST['wpzoom-update-do'])));
-            
+
             if ($action == 'update') {
                 $fwUrl = 'http://framework.wpzoom.com/wpzoom-framework.zip';
                 $fwFile = download_url($fwUrl);
-                
+
                 if (is_wp_error($fwUrl)) {
                     $error = $fwFile->get_error_code();
-                    
+
                     if ($error == 'http_no_url') {
                         $r = "<p>Failed: Invalid URL Provided</p>";
                     } else {
@@ -170,18 +170,18 @@ class WPZOOM_Framework_Updater {
                     return;
                 }
             }
-        
+
             global $wp_filesystem;
             $to = WPZOOM::get_wpzoom_root();
             $dounzip = unzip_file($fwFile, $to);
-            
+
             unlink($fwFile);
-            
+
             if (is_wp_error($dounzip)) {
-            
+
                 $error = $dounzip->get_error_code();
                 $data = $dounzip->get_error_data($error);
-            
+
                 if($error == 'incompatible_archive') {
                     //The source file was not found or is invalid
                     function framework_update_no_archive_warning() {
@@ -207,21 +207,21 @@ class WPZOOM_Framework_Updater {
                     }
                     add_action( 'admin_notices', 'update_copy_fail_warning' );
                 }
-            
+
                 return;
-            
+
             }
-            
+
             function framework_updated_success() {
                 echo '<div class="updated fade"><p>New framework successfully downloaded, extracted and updated.</p></div>';
             }
             add_action('admin_notices', 'framework_updated_success');
 
             remove_action('admin_notices', array('WPZOOM', 'notification'));
-            
+
             option::delete('framework_status');
             option::set('framework_last_checked', time());
-        
+
         }
     }
 }

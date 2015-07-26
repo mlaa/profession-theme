@@ -175,7 +175,7 @@ function get_the_image( $args = array() ) {
     }
 
     /* Allow plugins/theme to override the final output. */
-    $image_html = apply_filters( 'get_the_image', $image_html );
+    $image_html = apply_filters( 'get_the_image', $image_html, $args );
 
     /* If $format is set to 'array', return an array of image attributes. */
     if ( 'array' == $format ) {
@@ -444,11 +444,11 @@ function get_the_image_format( $args = array(), $image = false ) {
     $class = join( ' ', array_unique( $classes ) );
 
     /* Add the image attributes to the <img /> element. */
-    $html = '<img src="' . $image['src'] . '" class="' . esc_attr( $class ) . '"' . $width . $height . ' />';
+    $html = '<img src="' . $image['src'] . '" alt="' . esc_attr( strip_tags( $image_alt ) ) . '" class="' . esc_attr( $class ) . '"' . $width . $height . ' />';
 
     /* If $link_to_post is set to true, link the image to its post. */
     if ( $link_to_post )
-        $html = '<p class="thumbnail"><a href="' . get_permalink( $post_id ) . '" title="' . esc_attr( apply_filters( 'the_title', get_post_field( 'post_title', $post_id ) ) ) . '">' . $html . '</a><br/><span class="imagecaption">' . esc_attr( strip_tags( $image_alt ) ) . '</span></p>';
+        $html = '<a href="' . get_permalink( $post_id ) . '" title="' . esc_attr( apply_filters( 'the_title', get_post_field( 'post_title', $post_id ) ) ) . '">' . $html . '</a>';
 
     /* If there is a $post_thumbnail_id, apply the WP filters normally associated with get_the_post_thumbnail(). */
     if ( !empty( $image['post_thumbnail_id'] ) )
