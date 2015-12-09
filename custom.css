@@ -59,11 +59,11 @@ h6 {
    font-weight: normal;
 }
 
-.title, ol.toc .title {
+.title, .toc .title {
    margin: 0.5em 0;
 }
 
-.author, ol.toc .author {
+.author, .toc .author {
    margin-top: 0.25em;
    color: #666;
    font-weight: normal;
@@ -95,7 +95,7 @@ a:hover {
 
 a img { border: none; }
 
-p.wc a, p.note a {
+.wc a, .note a {
    color: #000;
    text-decoration: underline;
 }
@@ -117,12 +117,12 @@ hr {
 
 /* Epigraphs */
 
-p.epigraph {
+.epigraph {
    margin: 0;
    font-style: italic;
 }
 
-p.epigraph-reference {
+.epigraph-reference {
    margin-top: 0.25em;
    text-align: right;
 }
@@ -140,7 +140,7 @@ a.return {
    padding-left: 0.25em;
 }
 
-ol.notes {
+.notes {
    margin: 1.5em 0;
    padding-left: 1.5em;
 }
@@ -179,40 +179,40 @@ blockquote p {
 
 /* Figures */
 
-div.figure {
+.figure {
    margin: 2em 0;
 }
 
-div.figure p {
+.figure p {
    font-size: 0.9em;
 }
 
-div.placeholder img {
+.placeholder img {
    width: 350px;
    height: 200px;
    background-color: #fcc;
 }
 
-p.caption {
+.caption {
    margin: 1em 0;
    color: #222;
    font-weight: bold;
 }
 
-/* center images */ 
-.wp-caption.alignnone, .wp-caption.aligncenter { 
-	margin: 1.5em auto; 
+/* center images */
+.wp-caption.alignnone, .wp-caption.aligncenter {
+	margin: 1.5em auto;
 }
-/* center the caption, too */ 
-.wp-caption p { 
-	text-align: center; 
-	font-size: 85%; 
-	font-family: "Trebuchet MS", sans-serif; 
-} 
+/* center the caption, too */
+.wp-caption p {
+	text-align: center;
+	font-size: 85%;
+	font-family: "Trebuchet MS", sans-serif;
+}
 
 /* Author note */
 
-p.authornote {
+.authornote {
    margin-top: 2em;
    padding: 1em;
    background-color: #ddd;
@@ -240,8 +240,8 @@ p.authornote {
 
 /* Inline */
 
-span.tight { letter-spacing: -0.15em; }
-span.hilarious { font-family: "Comic Sans MS", monospace; }
+.tight { letter-spacing: -0.15em; }
+.hilarious { font-family: "Comic Sans MS", monospace; }
 
 
 /* Tweaks */
@@ -280,7 +280,7 @@ h1.title a {
    line-height: 90%;
 }
 
-img.thumbnail {
+.thumbnail {
    margin-bottom: 0;
 }
 
@@ -310,9 +310,9 @@ img.thumbnail {
   margin-top: -0.5em;
 }
 
-.pub_date p { 
-   font-weight: bold; 
-} 
+.pub_date p {
+   font-weight: bold;
+}
 
 /* Home page categories */
 
@@ -382,17 +382,17 @@ body.category .category {
 
 /* Navigation */
 
-div.navigation {
+.navigation {
    font-family: jaf-facitweb, "Trebuchet MS", sans-serif;
    font-size: 1em;
 }
 
 
-/* Bugfixes */ 
+/* Bugfixes */
 
-/* don't center categories in the archive list */ 
-.archive span.category { 
-	text-align: left; 
-} 
+/* don't center categories in the archive list */
+.archive .category {
+	text-align: left;
+}
 
 
