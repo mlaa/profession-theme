@@ -387,6 +387,50 @@ body.category .category {
    font-size: 1em;
 }
 
+/* Table figures */
+
+.figure {
+  width: 100%;
+  overflow-x: auto;
+}
+
+.figure table {
+  font-size: 0.8em;
+  border-bottom: 1px solid #000;
+  min-width: 40em;
+  overflow-x: scroll;
+  width: 100%;
+}
+
+.figure th {
+  font-size: 0.85em;
+  font-weight: normal;
+  padding-top: .5em;
+}
+
+.figure th[scope=col] {
+  border-bottom: 1px solid #000;
+  text-align: center;
+  vertical-align: bottom;
+}
+
+.figure th[scope=row] {
+  white-space: nowrap;
+}
+
+.figure td {
+  padding-top: .5em;
+  text-align: right;
+  white-space: nowrap;
+}
+
+.figure tr:not(:last-child) {
+  border-bottom: 1px solid #ddd;
+}
+
+.shaded {
+    background-color: #ccc;
+}
 
 /* Bugfixes */
 
