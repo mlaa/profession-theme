@@ -48,4 +48,24 @@ function exclude_widget_categories ($args){
 
 add_filter("widget_categories_args","exclude_widget_categories");
 
-?>
+function profession_user_add_image_captions ( $html ) {
+	// expect an anchor containing one img
+	$a = $html;
+
+	preg_match( '/alt="([^"]*)"/', $a, $image_alt );
+
+	if ( isset( $image_alt[1] ) ) {
+		// constrain thumbnail width to ensure long captions wrap rather than stretching the container
+		preg_match( '/width="(\d+)"/', $a, $image_width );
+
+		$style_attr = ( isset( $image_width[1] ) ) ? ' style="max-width: '. $image_width[1] . 'px"' : '';
+
+		$html = '<p class="thumbnail"' . $style_attr . '>';
+		$html .= $a . '<br/>';
+		$html .= '<span class="imagecaption">' . esc_attr( strip_tags( $image_alt[1] ) ) . '</span>';
+		$html .= '</p>';
+	}
+
+	return $html;
+}
+add_filter( 'get_the_image', 'profession_user_add_image_captions' );
