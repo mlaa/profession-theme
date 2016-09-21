@@ -141,8 +141,7 @@ a.return {
 }
 
 .notes {
-   margin: 1.5em 0;
-   padding-left: 1.5em;
+   margin: 0 0 20px;
 }
 
 
@@ -213,7 +212,7 @@ blockquote p {
 /* Author note */
 
 .authornote {
-   margin-top: 2em;
+   margin-top: 1.5em;
    padding: 1em;
    background-color: #ddd;
 }
